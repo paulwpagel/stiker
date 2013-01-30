@@ -81,6 +81,19 @@ module Rinda
         end
       end
     end
+    
+    def read_tuple(tuple, pulse = @pulse, &block)
+      @tuple = rinda_client.read(tuple, 0)
+      if @tuple
+        @is_loaded_cycle = true if !@pinging
+        begin
+          yield(@tuple) if block_given?
+        rescue Exception => e
+          standard_error_response(@tuple[0], @tuple[2], e, @tuple)
+        end
+      end
+    end
+    
 
     def standard_error_response(context, task, e, tuple)
       log_exception(e)

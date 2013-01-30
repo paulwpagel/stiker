@@ -12,20 +12,20 @@ class Bank
   end
   
   def buy(account, stock_name, purchase_price, quantity)
-    sale_price = purchase_price * quantity
+    sale_price = purchase_price.to_f * quantity.to_f
     if @accounts[account].amount >= sale_price
       @accounts[account].amount -= sale_price
       @accounts[account].add_asset(stock_name, quantity)
-      @logger.info("#{account} purchased #{quantity} at #{purchase_price} per unit.  Balance=#{@accounts[account].amount}")
+      @logger.info("#{account} purchased #{quantity} of #{stock_name} at #{purchase_price} per unit.  Balance=#{@accounts[account].amount}")
     end
   end
   
   def sell(account, stock_name, purchase_price, quantity)
-    sale_price = purchase_price * quantity
+    sale_price = purchase_price.to_f * quantity.to_f
     if !@accounts[account].assets[stock_name].nil? && @accounts[account].assets[stock_name] >= quantity
       @accounts[account].amount += sale_price
       @accounts[account].remove_asset(stock_name, quantity)
-      @logger.info("#{account} sold #{quantity} at #{purchase_price} per unit.  Balance=#{@accounts[account].amount}")
+      @logger.info("#{account} sold #{quantity} of #{stock_name} at #{purchase_price} per unit.  Balance=#{@accounts[account].amount}")
     end
   end
 end

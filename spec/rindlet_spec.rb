@@ -38,6 +38,10 @@ describe Rinda::Rindlet do
     @rinda_client = MockRindaClient.new
     @rindlet.rinda_client = @rinda_client
   end
+  
+  it "should " do
+    
+  end
 
   # it "should re-post the tuple when a recoverable exceptions" do
   #   @rindlet.recover_from(Timeout::Error)

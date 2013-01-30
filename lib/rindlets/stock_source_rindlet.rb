@@ -10,7 +10,7 @@ module Rinda
     end
 
     def run
-      with_tuple(["update", name]) do |tuple|
+      with_tuple(["stock", name]) do |tuple|
         sleep 5
 
         old_price = tuple[2]

@@ -1,12 +1,14 @@
 class Bank
   attr_reader :accounts
   
-  def initialize
+  def initialize(logger)
+    @logger = logger
     @accounts = {}
   end
   
   def register(account)
     @accounts[account] = Account.new( 100000)
+    @logger.info("#{account} registered.  Balance=#{@accounts[account].amount}")
   end
   
   def buy(account, stock_name, purchase_price, quantity)
@@ -14,6 +16,7 @@ class Bank
     if @accounts[account].amount >= sale_price
       @accounts[account].amount -= sale_price
       @accounts[account].add_asset(stock_name, quantity)
+      @logger.info("#{account} purchased #{quantity} at #{purchase_price} per unit.  Balance=#{@accounts[account].amount}")
     end
   end
   
@@ -22,6 +25,7 @@ class Bank
     if !@accounts[account].assets[stock_name].nil? && @accounts[account].assets[stock_name] >= quantity
       @accounts[account].amount += sale_price
       @accounts[account].remove_asset(stock_name, quantity)
+      @logger.info("#{account} sold #{quantity} at #{purchase_price} per unit.  Balance=#{@accounts[account].amount}")
     end
   end
 end

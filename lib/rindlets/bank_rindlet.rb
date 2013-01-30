@@ -1,11 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + "/../rindlet")
 require "bank"
+require "simple_logger"
 
 module Rinda
   class StockSourceRindlet < Rindlet
   
     def initialize(name, initial_price)
-      @bank = Bank.new
+      @bank = Bank.new($logger)
       super(1)
     end
 

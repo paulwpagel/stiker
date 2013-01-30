@@ -1,25 +1,25 @@
 require "spec_helper"
 require "bank"
-
+require "simple_logger"
 
 describe Bank do
   
   it "registers a new account" do
-    @bank = Bank.new
+    @bank = Bank.new($logger)
     @bank.register("Paul")
     
     @bank.accounts.size.should == 1
   end
   
   it "registers an account with a default amount" do
-    @bank = Bank.new
+    @bank = Bank.new($logger)
     @bank.register("Paul")
     
     @bank.accounts["Paul"].amount.should == 100000
   end
   
   it "buys a stock" do
-    @bank = Bank.new
+    @bank = Bank.new($logger)
     @bank.register("Paul")
     @bank.buy("Paul", "AAPL", 1000, 100)
 
@@ -28,7 +28,7 @@ describe Bank do
   end
   
   it "doesn't let you buy more than money you have" do
-    @bank = Bank.new
+    @bank = Bank.new($logger)
     @bank.register("Paul")
     @bank.buy("Paul", "AAPL", 1000, 1000)
 
@@ -37,7 +37,7 @@ describe Bank do
   end
 
   it "sells a stock" do
-    @bank = Bank.new
+    @bank = Bank.new($logger)
     @bank.register("Paul")
     @bank.buy("Paul", "AAPL", 1000, 100)
 
@@ -49,7 +49,7 @@ describe Bank do
   end
   
   it "won't let you sell more than you have by ignoring the transaction" do
-    @bank = Bank.new
+    @bank = Bank.new($logger)
     @bank.register("Paul")
     @bank.buy("Paul", "AAPL", 1000, 100)
 
@@ -61,7 +61,7 @@ describe Bank do
   end
   
   it "can't sell something it doesn't have" do
-    @bank = Bank.new
+    @bank = Bank.new($logger)
     @bank.register("Paul")
     @bank.sell("Paul", "AAPL", 1000, 1000)
     @bank.accounts["Paul"].amount.should == 100000

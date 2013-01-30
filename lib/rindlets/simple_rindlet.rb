@@ -1,4 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + "/../rindlet")
+require "simple_logger"
 
 module Rinda
   class SimpleRindlet < Rindlet
@@ -19,17 +20,5 @@ module Rinda
     end
   
   end 
-
-  class SimpleLogger
-  
-    def info(message)
-      puts message
-    end
-  
-    def error(message)
-      puts message
-    end
-  
-  end
 end
 

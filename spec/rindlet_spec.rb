@@ -32,44 +32,6 @@ describe Rinda::Rindlet do
     end
   end
 
-  # used to test if do_nothing was called (in Thread-per-request model do_nothing will be called on another instance of TestRindlet)
-  class DoNothingConfirmation
-    def self.called
-      puts "\n\ncalled!"
-      # use a matcher like DoNothingConfirmation.should_receive(:called)
-    end
-  end
-
-  class Test2Rindlet < Rindlet
-
-    def initialize(number, pulse = 5)
-      super(number, pulse)
-    end
-
-    def run
-      with_tuple(TEST_RINDLET_TEMPLATE) do |tuple|
-        do_nothing
-      end
-    end
-
-    def do_nothing
-    end
-
-    def do_standard_preparation
-    end
-
-    def enter_loop
-      check_for_ping
-      run
-    end
-
-    def standard_error_response(context, task, e, tuple, app_id, timeout=nil)
-      @rinda_client.write([context, "response", task, "error", e.to_s, tuple, nil], timeout)
-      $logger.pb_error e.to_s
-      $logger.pb_error e.backtrace.join("\n")
-    end
-  end
-
   before(:each) do
 
     @rindlet = TestRindlet.new(1)

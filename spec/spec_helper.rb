@@ -1,4 +1,4 @@
-$: << File.dirname(__FILE__) + "/../lib"
+$: << File.expand_path(File.dirname(__FILE__) + "/../lib")
 require 'rubygems'
 require 'rspec'
 require "mock_rinda_client"

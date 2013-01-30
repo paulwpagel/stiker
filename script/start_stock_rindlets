@@ -1,13 +1,6 @@
 #!/usr/bin/env ruby
 
-$: << File.expand_path(File.dirname(__FILE__) + "/../lib")
-require "rubygems"
-require "daemons"
 
+require File.expand_path(File.dirname(__FILE__) + "/config")
 require "rindlets/stock_source_rindlet"
-
-CONFIG = {:rinda_port => 6683, :rinda_host => "localhost"} unless defined?(CONFIG)
-
-$logger = Rinda::SimpleLogger.new
-
-Rinda::StockSourceRindlet.new(ARGV[0],ARGV[1].to_f).start
+StockSourceRindlet.new(ARGV[0],ARGV[1].to_f).start

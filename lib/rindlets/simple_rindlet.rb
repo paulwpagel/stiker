@@ -10,10 +10,11 @@ module Rinda
     end
 
     def run
-      with_tuple(["simple"]) do 
+      with_tuple(["simple"]) do |tuple|
         sleep 1
-        $logger.info @tuple[1]
-        @rinda_client.write(["simple", (@tuple[1].to_i + 1).to_s], 10)
+        
+        $logger.info tuple[1]
+        @rinda_client.write(["simple", (tuple[1].to_i + 1).to_s], 10)
       end
     end
   
@@ -32,6 +33,3 @@ module Rinda
   end
 end
 
-CONFIG = {:rinda_port => 6683, :rinda_host => "localhost"} unless defined?(CONFIG)
-$logger = Rinda::SimpleLogger.new
-Rinda::SimpleRindlet.new.start

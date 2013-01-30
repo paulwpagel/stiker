@@ -1,6 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 require "rindlet"
-require 'rindlet_context'
 include Rinda
 
 TEST_RINDLET_TEMPLATE = ["test_context", "request", "test"]

@@ -6,8 +6,7 @@ module Rinda
   
     def initialize
       super(1)
-      @rinda_client = RindaClient.new
-      @rinda_client.write(["simple", "0"])
+      rinda_client.write(["simple", "0"])
     end
 
     def run

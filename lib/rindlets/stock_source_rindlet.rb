@@ -15,7 +15,6 @@ class StockSourceRindlet < Rinda::Rindlet
       new_price = old_price.to_i * change_by[rand(change_by.length)]
       $logger.info "Updating #{@name} from #{old_price} to #{new_price}"
       rinda_client.write(["stock", name, new_price])
-
       sleep 5
     end
   end

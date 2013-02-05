@@ -30,7 +30,8 @@ describe Bank do
   it "doesn't let you buy more than money you have" do
     @bank = Bank.new($logger)
     @bank.register("Paul")
-    @bank.buy("Paul", "AAPL", 1000, 1000)
+    
+    expect {@bank.buy("Paul", "AAPL", 1000, 1000)}.to raise_error(InsufficientFunds)
 
     @bank.accounts["Paul"].amount.should == 100000    
     @bank.accounts["Paul"].assets["AAPL"].should be_nil
@@ -48,14 +49,13 @@ describe Bank do
     @bank.accounts["Paul"].assets["AAPL"].should == 0
   end
   
-  it "won't let you sell more than you have by ignoring the transaction" do
+  it "won't let you sell more stocks than you own" do
     @bank = Bank.new($logger)
     @bank.register("Paul")
     @bank.buy("Paul", "AAPL", 1000, 100)
+    
+    expect {@bank.sell("Paul", "AAPL", 1000, 1000)}.to raise_error(InsufficientAssets)
 
-    @bank.accounts["Paul"].amount.should == 0  
-    @bank.accounts["Paul"].assets["AAPL"].should == 100
-    @bank.sell("Paul", "AAPL", 1000, 1000)
     @bank.accounts["Paul"].amount.should == 0
     @bank.accounts["Paul"].assets["AAPL"].should == 100
   end
@@ -63,7 +63,10 @@ describe Bank do
   it "can't sell something it doesn't have" do
     @bank = Bank.new($logger)
     @bank.register("Paul")
-    @bank.sell("Paul", "AAPL", 1000, 1000)
+    
+    expect {@bank.sell("Paul", "AAPL", 1000, 1000)}.to raise_error(InsufficientAssets)
+    
     @bank.accounts["Paul"].amount.should == 100000
   end
+  
 end

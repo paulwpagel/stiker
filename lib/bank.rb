@@ -1,3 +1,11 @@
+require "account"
+
+class InsufficientFunds < Exception
+end
+
+class InsufficientAssets < Exception
+end
+
 class Bank
   attr_reader :accounts
   
@@ -17,6 +25,8 @@ class Bank
       @accounts[account].amount -= sale_price
       @accounts[account].add_asset(stock_name, quantity)
       @logger.info("#{account} purchased #{quantity} of #{stock_name} at #{purchase_price} per unit.  Balance=#{@accounts[account].amount}")
+    else
+      raise InsufficientFunds
     end
   end
   
@@ -26,28 +36,9 @@ class Bank
       @accounts[account].amount += sale_price
       @accounts[account].remove_asset(stock_name, quantity)
       @logger.info("#{account} sold #{quantity} of #{stock_name} at #{purchase_price} per unit.  Balance=#{@accounts[account].amount}")
+    else
+      raise InsufficientAssets
     end
   end
 end
 
-
-class Account
-  attr_accessor :amount, :assets
-  def initialize(initial_amount)
-    @amount = initial_amount
-    @assets= {}
-  end
-  
-  def add_asset(name, quantity)
-    if @assets[name].nil?
-      @assets[name] = 0
-    end
-    
-    @assets[name] += quantity    
-  end
-  
-  def remove_asset(name, quantity)
-    @assets[name] -= quantity    
-  end
-  
-end

@@ -40,6 +40,13 @@ module Rinda
         return tuplespace.read(standardize(tuple), timeout)
       end
     end
+    
+    # Reads all tuples matching the given tuple
+    def read_all(tuple, timeout = nil)
+      with_tuplespace(timeout) do |tuplespace|
+        return tuplespace.read_all(standardize(tuple))
+      end
+    end
 
     # Sends a notify to the tuplespeace for the event with specified timeout if given
     def notify(event, tuple, timeout = nil)

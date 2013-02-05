@@ -15,7 +15,7 @@ class Bank
   end
   
   def register(account)
-    @accounts[account] = Account.new( 100000)
+    @accounts[account] = Account.new(100000)
     @logger.info("#{account} registered.  Balance=#{@accounts[account].amount}")
   end
   

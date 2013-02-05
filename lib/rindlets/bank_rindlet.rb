@@ -41,9 +41,9 @@ class BankRindlet < Rinda::Rindlet
           return_value = current_price = current_price(stock_name)
           @bank.sell(account_name, stock_name, current_price, quantity)
         end
-        rinda_client.write(["bank", "confirmation", account_name, action, return_value, tuple])
+        rinda_client.write(["response", "confirmation", account_name, action, return_value, tuple])
       rescue InsufficientFunds, InsufficientAssets, StockPriceUnavailable
-        rinda_client.write(["bank", "failure", account_name, action, nil, tuple])
+        rinda_client.write(["response", "failure", account_name, action, nil, tuple])
       end
     end
   end

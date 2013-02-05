@@ -10,26 +10,17 @@ module Rinda
   # rinda_client - provide a specific <tt>Rinda::RindaClient</tt>
 
   class Rindlet
-
     attr_accessor :rinda_client
-    attr_accessor :pulse
-    attr_accessor :number
-    attr_accessor :app_id
-    attr_accessor :error_topic    
     attr_accessor :tuple
+    attr_accessor :name
+    attr_accessor :running
 
-    # Creates a Rindlet instance identified by number
-    def initialize(number, pulse = 5)
-      @number = number
-      @pulse = pulse
+    def initialize
       @running = false
-      @retry_delay = CONFIG[:rindlet_retry_delay] || 3600
-      @error_topic = "error"
-
     end
 
     def name
-      @name = "#{self.class.name.split('::')[-1]}_#{number}" if not @name
+      @name = "#{self.class.name.split('::')[-1]}" if not @name
       return @name
     end
 
@@ -70,8 +61,8 @@ module Rinda
       @rinda_client ||= RindaClient.new
     end
 
-    def with_tuple(tuple, pulse = @pulse, &block)
-      @tuple = take_with_timeout(tuple, pulse)
+    def with_tuple(tuple, &block)
+      @tuple = take_with_timeout(tuple)
       if @tuple
         @is_loaded_cycle = true if !@pinging
         begin
@@ -80,20 +71,7 @@ module Rinda
           standard_error_response(@tuple[0], @tuple[2], e, @tuple)
         end
       end
-    end
-    
-    # def read_tuple(tuple, pulse = @pulse, &block)
-    #   @tuple = rinda_client.read(tuple, 0)
-    #   if @tuple
-    #     @is_loaded_cycle = true if !@pinging
-    #     begin
-    #       yield(@tuple) if block_given?
-    #     rescue Exception => e
-    #       standard_error_response(@tuple[0], @tuple[2], e, @tuple)
-    #     end
-    #   end
-    # end
-    
+    end    
 
     def standard_error_response(context, task, e, tuple)
       log_exception(e)
@@ -102,7 +80,7 @@ module Rinda
 
     private ###############################################
 
-    def take_with_timeout(wildcard_tuple, timeout)
+    def take_with_timeout(wildcard_tuple, timeout = 1)
       rinda_client.take(wildcard_tuple, timeout)
     end
 

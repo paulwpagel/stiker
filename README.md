@@ -11,5 +11,5 @@ Sell     - ["bank", "sell", account_name, stock_name, quantity]
 
 
 Bank Responses:
-Confirmation  - ["bank", "confirmation", account_name, bank_command, return_value, tuple]
-Failure       - ["bank", "failure", account_name, bank_command, return_value, tuple]
+Confirmation  - ["response", "confirmation", account_name, bank_command, return_value, tuple]
+Failure       - ["response", "failure", account_name, bank_command, return_value, tuple]

@@ -17,5 +17,4 @@ data
 .yardoc
 _yardoc
 doc/
-lib/rindlets/stock_source_rindlet.rb
 script/start_stock_rindlets

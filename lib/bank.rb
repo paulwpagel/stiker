@@ -40,5 +40,11 @@ class Bank
       raise InsufficientAssets
     end
   end
+
+  def print_balances
+    @accounts.each do |name, account|
+      @logger.info("#{name}'s Balance = $#{account.amount}")
+    end
+  end
 end
 

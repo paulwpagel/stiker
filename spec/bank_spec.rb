@@ -1,6 +1,7 @@
 require "spec_helper"
 require "bank"
 require "simple_logger"
+require "mock_logger"
 
 describe Bank do
   
@@ -67,6 +68,16 @@ describe Bank do
     expect {@bank.sell("Paul", "AAPL", 1000, 1000)}.to raise_error(InsufficientAssets)
     
     @bank.accounts["Paul"].amount.should == 100000
+  end
+
+  it "prints the current balance of all accounts" do
+    @logger = MockLogger.new
+    @bank = Bank.new(@logger)
+    @bank.register("Paul")
+    @bank.register("8thL")
+    @bank.print_balances
+
+    @logger.infos.should include("Paul's Balance = $100000", "8thL's Balance = $100000")
   end
   
 end

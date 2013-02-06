@@ -3,7 +3,6 @@ require File.expand_path(File.dirname(__FILE__) + "/../rindlet")
 class StockSourceRindlet < Rinda::Rindlet
 
   def initialize(name, initial_price)
-    super(1)
     @name = name
     rinda_client.write(["stock", name, initial_price])
   end

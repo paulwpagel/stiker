@@ -44,5 +44,11 @@ class Bank
   def balance(account_name)
     @accounts[account_name]
   end
+
+  def print_balances
+    @accounts.each do |name, account|
+      @logger.info("#{name}'s Balance = $#{account.amount}")
+    end
+  end
 end
 

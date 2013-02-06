@@ -103,4 +103,13 @@ describe BankRindlet do
     @rinda_client.writes.should include(["bank", "response", "confirmation", "test", "balance", 100000.0, tuple])
   end
 
+
+  it "takes a print balance command and asks the bank to print the balances" do
+    tuple = ["bank", "request", "print_balances"]
+
+    @rinda_client.takes << [bank_request, tuple]
+    @bank.should_receive(:print_balances)
+    @rindlet.run
+  end
+  
 end

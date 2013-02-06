@@ -5,7 +5,7 @@ describe BankRindlet do
   let(:bank_request) { ["bank", "request"] }
 
   before(:each) do
-    @bank = mock(Bank, :buy => nil, :sell => nil, :register => nil)
+    @bank = mock(Bank, :buy => nil, :sell => nil, :register => nil, :balance => 100000.0)
     Bank.stub!(:new).and_return(@bank)
     @rindlet = BankRindlet.new()
     @rinda_client = MockRindaClient.new
@@ -88,5 +88,19 @@ describe BankRindlet do
     @rindlet.run
     @rinda_client.writes.should include(["bank", "response", "failure", "test", "buy", nil, tuple])
   end
-  
+
+  it "takes a balance request and passes it to the bank" do
+    @bank.should_receive(:balance).with("test")
+    @rinda_client.takes << [bank_request, ["bank", "request", "balance", "test"]]
+    @rindlet.run
+  end
+
+  it "writes a confirmation message if balance is successfully retrieved" do
+    tuple = ["bank", "request", "balance", "test"]
+
+    @rinda_client.takes << [bank_request, tuple]
+    @rindlet.run
+    @rinda_client.writes.should include(["bank", "response", "confirmation", "test", "balance", 100000.0, tuple])
+  end
+
 end

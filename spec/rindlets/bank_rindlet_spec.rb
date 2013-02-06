@@ -2,15 +2,19 @@ require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 require "rindlets/bank_rindlet"
 
 describe BankRindlet do
-  let(:bank_request) { ["bank", "request"] }
+  let!(:bank_request) { ["bank", "request"] }
+  let!(:account) {mock('account', :amount => 100000)}
+  let!(:accounts) {mock('accounts')}
 
   before(:each) do
-    @bank = mock(Bank, :buy => nil, :sell => nil, :register => nil, :balance => 100000.0)
+    @bank = mock(Bank, :buy => nil, :sell => nil, :register => nil, :balance => 100000.0, :accounts => {})
     Bank.stub!(:new).and_return(@bank)
     @rindlet = BankRindlet.new()
     @rinda_client = MockRindaClient.new
     @rinda_client.takes << [["stock", "AAPL"], ["stock", "AAPL", 500.00]]
     @rindlet.rinda_client = @rinda_client
+    accounts.stub!(:[]).and_return(account)
+    @bank.stub!(:accounts).and_return(accounts)
   end
   
   it "takes a registration and passes it to the bank" do
@@ -22,6 +26,7 @@ describe BankRindlet do
   it "writes a confirmation for a registration" do
     tuple = ["bank", "request", "register", "test"]
     
+    accounts.should_receive(:[]).with("test").and_return(account)
     @rinda_client.takes << [bank_request, tuple]
     @rindlet.run
     @rinda_client.writes.should include(["bank", "response", "confirmation", "test", "register", 100000, tuple])
